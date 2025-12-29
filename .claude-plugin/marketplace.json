@@ -1,0 +1,6 @@
+{
+  "name": "ship-workflow",
+  "description": "PR review, commit messages, and Atlassian documentation workflow",
+  "version": "1.0.0",
+  "author": "jyoutir"
+}

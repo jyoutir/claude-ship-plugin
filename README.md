@@ -1,36 +1,31 @@
-# Ship Plugin for Claude Code
+# Ship Workflow Plugin for Claude Code
 
-A workflow plugin for shipping features with thorough PR review, commit messages, and Atlassian documentation.
+A Claude Code plugin that helps you ship features with thorough PR reviews, commit messages, and Atlassian documentation.
 
 ## What it does
 
-`/ship` runs a 3-step workflow:
+When you run `/ship`, Claude will:
 
-1. **Thorough PR Review** - Code quality, bugs, security, performance checks
-2. **Commit Message** - Generates concise commit message (you commit manually)
-3. **Documentation** - Writes & pushes docs to Confluence/Atlassian
+1. **Thorough PR Review** - Analyzes your changes for code quality, bugs, security, and performance
+2. **Commit Message** - Generates a concise commit message (you commit manually)
+3. **Documentation** - Writes and pushes feature docs to Atlassian Confluence
 
 ## Installation
 
+```bash
+/plugin marketplace add jyoutir/claude-ship-plugin
+/plugin install ship
 ```
-/plugin install your-username/claude-ship-plugin
-```
-
-## Requirements
-
-- Atlassian MCP plugin enabled (for pushing docs)
-- Run `npx -y mcp-remote https://mcp.atlassian.com/v1/sse` to authenticate
 
 ## Usage
 
-After finishing a feature:
+After completing a feature:
 
 ```
 /ship
 ```
 
-## Files
+## Requirements
 
-- `commands/ship.md` - Main /ship command
-- `skills/ship/COMMIT_STANDARDS.md` - Commit message guidelines
-- `skills/ship/DOC_TEMPLATE.md` - Documentation format template
+- Claude Code CLI
+- Atlassian MCP configured (for documentation push)

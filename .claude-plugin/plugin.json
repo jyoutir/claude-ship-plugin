@@ -1,7 +1,0 @@
-{
-  "name": "ship",
-  "version": "1.0.0",
-  "description": "Ship workflow - thorough PR review, commit message generation, and push docs to Atlassian",
-  "author": "jyo",
-  "repository": "https://github.com/jyoutirraj/claude-ship-plugin"
-}
