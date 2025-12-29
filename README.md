@@ -1,14 +1,13 @@
 # Ship Workflow Plugin for Claude Code
 
-A Claude Code plugin that helps you ship features with thorough PR reviews, commit messages, and Atlassian documentation.
+Ship code while building deep understanding of your changes.
 
 ## What it does
 
-When you run `/ship`, Claude will:
-
-1. **Thorough PR Review** - Analyzes your changes for code quality, bugs, security, and performance
-2. **Commit Message** - Generates a concise commit message (you commit manually)
-3. **Documentation** - Writes and pushes feature docs to Atlassian Confluence
+1. **Code Review** - Bugs, security, performance issues with file:line references
+2. **Understanding Quiz** - Research-backed questions (Bloom's Taxonomy, Testing Effect) generated from your actual changes to build lasting mental models
+3. **Commit Message** - Conventional commit format
+4. **Confluence Docs** - Optional documentation push
 
 ## Installation
 
@@ -18,8 +17,6 @@ When you run `/ship`, Claude will:
 ```
 
 ## Usage
-
-After completing a feature:
 
 ```
 /ship
