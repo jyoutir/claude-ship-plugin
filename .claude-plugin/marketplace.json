@@ -1,10 +1,13 @@
 {
-  "owner": "jyo",
+  "name": "jyo-tools",
+  "owner": {
+    "name": "jyo"
+  },
   "plugins": [
     {
       "name": "ship",
-      "description": "Thorough PR review, commit message generation, and Atlassian documentation",
-      "path": "plugins/ship"
+      "source": "./plugins/ship",
+      "description": "Thorough PR review, commit message generation, and Atlassian documentation"
     }
   ]
 }
