@@ -1,6 +1,6 @@
 ---
-allowed-tools: Bash(git:*), Read, Grep, AskUserQuestion, WebSearch, WebFetch, mcp__atlassian__*
-description: Code review, quiz to deepen understanding, and push docs to Atlassian
+allowed-tools: Bash(git:*), Read, Grep, Glob, AskUserQuestion, WebSearch, WebFetch, Edit, Write, mcp__atlassian__*
+description: Code review, structure analysis, quiz to deepen understanding, and push docs to Atlassian
 ---
 
 # Ship Workflow
@@ -29,7 +29,156 @@ Provide: Summary, specific issues with file:line references, suggestions.
 
 ---
 
-## Step 3: Understanding Quiz
+## Step 3: Structure Review
+
+Analyze whether the changed/new code follows the **existing codebase's organizational patterns** and separation of concerns.
+
+### 3.1: Learn the Codebase Patterns
+
+Before suggesting changes, understand how THIS codebase is organized:
+
+1. **Map the directory structure** using Glob to understand the architecture:
+   - What are the top-level directories? (`lib/`, `src/`, `app/`, etc.)
+   - How are features organized? (by feature, by layer, hybrid?)
+   - Where do different concerns live? (UI, business logic, data, utilities)
+
+2. **Identify naming conventions**:
+   - File naming: `snake_case.dart`, `PascalCase.tsx`, `kebab-case.js`?
+   - Class/function naming patterns
+   - Suffix conventions: `*_screen.dart`, `*_controller.dart`, `*_repository.dart`?
+
+3. **Recognize layer boundaries** (reference: `STRUCTURE_PATTERNS.md`):
+   - **Presentation**: widgets, screens, controllers (state management)
+   - **Application**: services (orchestration logic)
+   - **Domain**: models, business logic, validation
+   - **Data**: repositories, data sources, DTOs
+   - **Shared**: common_widgets, utils, constants
+
+4. **Note existing patterns**:
+   - State management approach (Riverpod, Bloc, Redux, etc.)
+   - Dependency injection patterns
+   - How similar features are structured
+
+### 3.2: Analyze Changed Files
+
+For each new/modified file, evaluate:
+
+#### Location Check
+- Is this file in the right directory based on its responsibility?
+- Does it follow the feature/layer organization pattern?
+- Would a new developer know where to find this?
+
+#### Separation of Concerns
+- **UI Pollution**: Is business logic mixed into UI components?
+- **Data Leakage**: Is data access code mixed with presentation?
+- **God Files**: Is this file doing too many unrelated things?
+- **Cross-cutting**: Are concerns properly separated or tangled?
+
+#### Single Responsibility (File Level)
+- Does this file have ONE clear purpose?
+- Could you describe what this file does in one sentence?
+- If it has multiple responsibilities, how should they split?
+
+#### Pattern Consistency
+- Does it follow the same patterns as similar existing code?
+- Are naming conventions consistent?
+- Does it integrate cleanly with existing architecture?
+
+### 3.3: Structure Recommendations
+
+If issues are found, present:
+
+**1. Issue Summary**
+List each structural issue found:
+```
+⚠️ `lib/screens/session_handler.dart`
+   - Contains both UI widgets AND session management logic
+   - Session logic should live in a controller/service
+
+⚠️ `lib/utils/api_service.dart`
+   - Handles auth, user data, AND analytics
+   - Should be split by domain
+```
+
+**2. Proposed Structure**
+Show a tree diagram following the feature-first pattern (see `STRUCTURE_PATTERNS.md`):
+
+```
+📁 Proposed Structure:
+lib/src/
+├── features/
+│   └── session/
+│       ├── presentation/
+│       │   └── session_screen.dart      ← UI only
+│       ├── application/
+│       │   └── session_service.dart     ← Orchestration logic
+│       ├── domain/
+│       │   └── session_model.dart       ← Business logic
+│       └── data/
+│           └── session_repository.dart  ← Data access (extracted)
+├── common_widgets/                      ← Shared UI components
+└── utils/                               ← Shared utilities
+```
+
+**3. Migration Path**
+For each suggested change, explain:
+- WHAT to move/split
+- WHERE it should go
+- WHY this improves the structure
+- HOW it aligns with existing codebase patterns
+
+### 3.4: User Decision
+
+Use AskUserQuestion to present options:
+
+**"Structure Review Complete"**
+
+Options:
+- **Apply all** - Restructure files as suggested
+- **Apply some** - Let me choose which changes to apply
+- **Skip** - Keep current structure, continue to quiz
+- **Discuss** - I have questions about the suggestions
+
+### 3.5: Apply Restructuring (if approved)
+
+If user approves:
+
+1. **Execute the restructuring**:
+   - Move files to new locations
+   - Split files if needed (extract classes/functions to new files)
+   - Update imports across the codebase
+   - Ensure no broken references
+
+2. **Verify changes**:
+   - Run any available linter/analyzer (`flutter analyze`, `eslint`, etc.)
+   - Check for import errors
+
+3. **Proceed to commit message** (Step 4)
+
+### When to Skip Structure Review
+
+Skip this step if:
+- Changes are minor (single-line fixes, typos)
+- Changes are only to existing files without new structural elements
+- User explicitly requests to skip (`/ship --no-structure`)
+
+Mention briefly: "No structural concerns with these changes" and proceed to commit message.
+
+---
+
+## Step 4: Commit Message
+
+Generate concise commit message for all changes (including any structural improvements applied):
+- Imperative mood: "Add", "Fix", "Update"
+- Max 50 chars first line
+- Specific but concise
+- Focus on WHAT the feature/fix accomplishes, not the refactoring details
+
+Present to user. They commit manually.
+
+---
+
+## Step 5: Understanding Quiz
 
 ### Research Foundation
 
@@ -182,16 +331,7 @@ After all questions, provide:
 
 ---
 
-## Step 4: Commit Message
-
-Generate concise commit message:
-- Imperative mood: "Add", "Fix", "Update"
-- Max 50 chars first line
-- Specific but concise
-
-Present to user. They commit manually.
-
-## Step 5: Documentation (Optional)
+## Step 6: Documentation (Optional)
 
 Ask if they want to push docs to Confluence.
 

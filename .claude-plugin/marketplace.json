@@ -7,7 +7,7 @@
     {
       "name": "ship",
       "source": "./plugins/ship",
-      "description": "Thorough PR review, commit message generation, and Atlassian documentation"
+      "description": "Code review, structure analysis, quiz for deep understanding, and Atlassian documentation"
     }
   ]
 }
